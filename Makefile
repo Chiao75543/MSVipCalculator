@@ -52,7 +52,7 @@ vet: ## Vet Go code
 
 web-serve: ## Serve web version locally (requires Python)
 	@echo "Starting web server at http://localhost:4000"
-	@cd web && python3 -m http.server 4000
+	@cd docs && python3 -m http.server 4000
 
 install: ## Install the CLI tool globally
 	$(GOCMD) install ./cmd/msvip-calculator
