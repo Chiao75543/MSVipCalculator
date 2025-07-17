@@ -61,6 +61,9 @@ class MapleStoryCalculator {
             const faceValue = amountTWD / this.discountRate;
             result.beanPoints = faceValue;
             result.steps.push(`💳 點卡模式 (${(this.discountRate * 100).toFixed(0)}折): ${actualCost.toFixed(2)}台幣購買 → ${result.beanPoints.toFixed(2)}樂豆點 (面額${faceValue.toFixed(2)})`);
+        } else if (this.purchaseMode === 'original') {
+            result.beanPoints = amountTWD;
+            result.steps.push(`💳 原價模式: ${amountTWD.toFixed(2)}台幣 = ${result.beanPoints.toFixed(2)}樂豆點 (1:1無折扣)`);
         } else {
             const basePoints = amountTWD;
             const cashbackPoints = amountTWD * this.cashbackRate;
@@ -200,14 +203,18 @@ function updateParameterDisplay() {
         discountGroup.style.display = 'none'; // 讀卡機模式隱藏點卡折數
         // 強制設定為5%
         document.getElementById('cashbackRate').value = 5;
-    } else {
+    } else if (purchaseMode === 'discount') {
         cashbackGroup.style.display = 'none'; // 點卡模式也隱藏回饋率
         discountGroup.style.display = 'flex'; // 點卡模式顯示折數設定
+    } else {
+        // 原價模式，隱藏所有特殊設定
+        cashbackGroup.style.display = 'none';
+        discountGroup.style.display = 'none';
     }
 
     // 更新標籤顯示當前值
     document.getElementById('discountRate-label').textContent = `點卡折數 (${discountRate}%)`;
-    const vipLevelText = vipPointsPerBean == 30 ? '黃金' : vipPointsPerBean == 40 ? '鑽石' : '皇家';
+    const vipLevelText = vipPointsPerBean === 30 ? '黃金' : vipPointsPerBean === 40 ? '鑽石' : '皇家';
     document.getElementById('vipPointsPerBean-label').textContent = `VIP等級 (${vipLevelText})`;
     document.getElementById('mapleToMesoRate-label').textContent = `楓點兌換楓幣 (1:${mapleToMesoRate}億楓幣)`;
     document.getElementById('marketRate-label').textContent = `市場匯率 (1台幣=${marketRate}千萬楓幣)`;
@@ -216,6 +223,7 @@ function updateParameterDisplay() {
     const modeOptions = document.querySelectorAll('.mode-option .mode-desc');
     modeOptions[0].textContent = `1台幣 = 1.05樂豆點 (固定5%回饋)`;
     modeOptions[1].textContent = `${(discountRate/100).toFixed(2)}台幣 = 1樂豆點 (${discountRate}折)`;
+    modeOptions[2].textContent = `1台幣 = 1樂豆點 (無折扣)`;
 }
 
 function resetParameters() {
