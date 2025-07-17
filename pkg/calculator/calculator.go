@@ -10,6 +10,7 @@ type PurchaseMode int
 const (
 	DiscountMode PurchaseMode = iota
 	CashbackMode
+	OriginalMode
 )
 
 const (
@@ -50,7 +51,7 @@ func NewCalculator() *Calculator {
 		VIPPointsPerBean: 40,
 		VIPToMapleRate:   300,
 		MapleToMesoRate:  7,
-		MarketRate:       17,
+		MarketRate:       1.7,
 		MinPurchase:      50,
 		MaxPurchase:      1000000,
 	}
@@ -116,6 +117,9 @@ func (c *Calculator) Calculate(amountTWD float64) (*CalculationResult, error) {
 		cashbackPoints := amountTWD * c.CashbackRate
 		result.BeanPoints = basePoints + cashbackPoints
 		result.Steps = append(result.Steps, fmt.Sprintf("💳 刷卡模式: %.0f元 + %.1f%%回饋(%.0f) = %.0f樂豆點", basePoints, c.CashbackRate*100, cashbackPoints, result.BeanPoints))
+	case OriginalMode:
+		result.BeanPoints = amountTWD
+		result.Steps = append(result.Steps, fmt.Sprintf("💳 原價模式: %.0f元 = %.0f樂豆點 (1:1無折扣)", amountTWD, result.BeanPoints))
 	default:
 		return nil, fmt.Errorf("不支援的購買模式")
 	}

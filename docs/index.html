@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="蛤">
-    <meta name="keywords" content="楓之谷,樂豆點,VIP點數,獲利計算,MapleStory">
+    <meta name="description" content="凱子">
+    <meta name="keywords" content="楓之谷,萌萌小鵝,屌人">
     <title>🍁 楓之谷樂豆點回饋幣值計算機</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -57,13 +57,8 @@
                 <h2>⚙️ 參數設定</h2>
                 <form class="parameters-form">
                     <div class="parameters-grid">
-                        <div class="parameter-group" id="cashbackRate-group" style="display: none;">
-                            <label for="cashbackRate" id="cashbackRate-label">刷卡回饋率 (5%)</label>
-                            <input type="number" id="cashbackRate" value="5" min="0" max="50" step="0.1" 
-                                   aria-describedby="cashbackRate-help" readonly>
-                            <small id="cashbackRate-help" class="help-text">讀卡機固定5%回饋</small>
-                        </div>
-                        <div class="parameter-group" id="discountRate-group">
+                        <!-- 刷卡回饋率：固定5%，不需要顯示 -->
+                        <div class="parameter-group hidden" id="discountRate-group">
                             <label for="discountRate" id="discountRate-label">點卡折數 (折)</label>
                             <input type="number" id="discountRate" value="95" min="50" max="100" step="1"
                                    aria-describedby="discountRate-help">
@@ -78,12 +73,7 @@
                             </select>
                             <small id="vipPointsPerBean-help" class="help-text">選擇你的VIP等級</small>
                         </div>
-                        <div class="parameter-group" style="display: none;">
-                            <label for="vipToMapleRate" id="vipToMapleRate-label">VIP兌換楓點 (300:1)</label>
-                            <input type="number" id="vipToMapleRate" value="300" min="1" max="1000" step="1"
-                                   aria-describedby="vipToMapleRate-help" readonly>
-                            <small id="vipToMapleRate-help" class="help-text">VIP點數兌換楓點比率固定300:1</small>
-                        </div>
+                        <!-- VIP兌換楓點：固定300:1，不需要顯示 -->
                         <div class="parameter-group">
                             <label for="mapleToMesoRate" id="mapleToMesoRate-label">楓點兌換楓幣 (楓點:億楓幣)</label>
                             <input type="number" id="mapleToMesoRate" value="7" min="1" max="50" step="0.1"
@@ -124,12 +114,26 @@
                     <div id="profitSummary" class="profit-summary"></div>
                 </div>
             </section>
-
         </div>
     </main>
 
     <footer class="footer">
-        <p class="version">Vibe coding with claude code</p>
+        <p class="version">v1.0</p>
+        <p>@ kai081812 屌人</p>
+        
+        <!-- YouTube 頻道卡片 -->
+        <div class="youtube-card">
+            <a href="https://www.youtube.com/@萌萌小鵝" target="_blank" class="youtube-link">
+                <div class="youtube-preview">
+                    <div class="youtube-icon">📺</div>
+                    <div class="youtube-info">
+                        <h3>萌萌小鵝</h3>
+                        <p>YouTube 頻道</p>
+                    </div>
+                    <div class="external-link">🔗</div>
+                </div>
+            </a>
+        </div>
     </footer>
 
     <script src="calculator.js"></script>
