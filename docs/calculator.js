@@ -1,6 +1,13 @@
+// 購買模式常數
+const PURCHASE_MODES = {
+    CASHBACK: 'cashback',
+    DISCOUNT: 'discount', 
+    ORIGINAL: 'original'
+};
+
 class MapleStoryCalculator {
     constructor() {
-        this.purchaseMode = 'cashback';
+        this.purchaseMode = PURCHASE_MODES.CASHBACK;
         this.discountRate = 0.95;
         this.cashbackRate = 0.05;
         this.vipPointsPerBean = 40;
@@ -56,11 +63,14 @@ class MapleStoryCalculator {
         };
 
         // 計算樂豆點
-        if (this.purchaseMode === 'discount') {
+        if (this.purchaseMode === PURCHASE_MODES.DISCOUNT) {
             const actualCost = amountTWD;
             const faceValue = amountTWD / this.discountRate;
             result.beanPoints = faceValue;
             result.steps.push(`💳 點卡模式 (${(this.discountRate * 100).toFixed(0)}折): ${actualCost.toFixed(2)}台幣購買 → ${result.beanPoints.toFixed(2)}樂豆點 (面額${faceValue.toFixed(2)})`);
+        } else if (this.purchaseMode === PURCHASE_MODES.ORIGINAL) {
+            result.beanPoints = amountTWD;
+            result.steps.push(`💳 原價模式: ${amountTWD.toFixed(2)}台幣 = ${result.beanPoints.toFixed(2)}樂豆點 (1:1無折扣)`);
         } else {
             const basePoints = amountTWD;
             const cashbackPoints = amountTWD * this.cashbackRate;
@@ -111,10 +121,14 @@ class MapleStoryCalculator {
     }
     updateParameters() {
         this.purchaseMode = document.querySelector('input[name="purchaseMode"]:checked').value;
-        this.cashbackRate = parseFloat(document.getElementById('cashbackRate').value) / 100;
+        // 讀卡機模式固定5%回饋
+        if (this.purchaseMode === PURCHASE_MODES.CASHBACK) {
+            this.cashbackRate = 0.05;
+        }
         this.discountRate = parseFloat(document.getElementById('discountRate').value) / 100;
         this.vipPointsPerBean = parseFloat(document.getElementById('vipPointsPerBean').value);
-        this.vipToMapleRate = parseFloat(document.getElementById('vipToMapleRate').value);
+        // VIP兌換楓點固定300:1
+        this.vipToMapleRate = 300;
         this.mapleToMesoRate = parseFloat(document.getElementById('mapleToMesoRate').value);
         this.marketRate = parseFloat(document.getElementById('marketRate').value) * 10000000;
     }
@@ -149,7 +163,7 @@ function initializeEventListeners() {
     });
 
     // 參數變更監聽
-    const parameterInputs = ['cashbackRate', 'discountRate', 'vipPointsPerBean', 'vipToMapleRate', 'mapleToMesoRate', 'marketRate'];
+    const parameterInputs = ['discountRate', 'vipPointsPerBean', 'mapleToMesoRate', 'marketRate'];
     parameterInputs.forEach(id => {
         document.getElementById(id).addEventListener('input', updateParameterDisplay);
     });
@@ -177,37 +191,49 @@ function initializeEventListeners() {
 }
 
 function updateParameterDisplay() {
-    const cashbackRate = document.getElementById('cashbackRate').value;
     const discountRate = document.getElementById('discountRate').value;
     const vipPointsPerBean = document.getElementById('vipPointsPerBean').value;
-    const vipToMapleRate = document.getElementById('vipToMapleRate').value;
     const mapleToMesoRate = document.getElementById('mapleToMesoRate').value;
     const marketRate = document.getElementById('marketRate').value;
     const purchaseMode = document.querySelector('input[name="purchaseMode"]:checked').value;
 
+    // 根據選擇的模式顯示/隱藏對應的參數
+    const discountGroup = document.getElementById('discountRate-group');
+    
+    console.log('購買模式:', purchaseMode);
+    console.log('PURCHASE_MODES.DISCOUNT:', PURCHASE_MODES.DISCOUNT);
+    console.log('是否相等:', purchaseMode === PURCHASE_MODES.DISCOUNT);
+    
+    if (purchaseMode === PURCHASE_MODES.DISCOUNT) {
+        console.log('顯示點卡折數欄位');
+        discountGroup.classList.remove('hidden'); // 點卡模式顯示折數設定
+    } else {
+        console.log('隱藏點卡折數欄位');
+        // 讀卡機模式和原價模式都隱藏點卡折數
+        discountGroup.classList.add('hidden');
+    }
+
     // 更新標籤顯示當前值
-    document.getElementById('cashbackRate-label').textContent = `刷卡回饋率 (${cashbackRate}%)`;
     document.getElementById('discountRate-label').textContent = `點卡折數 (${discountRate}%)`;
-    document.getElementById('vipPointsPerBean-label').textContent = `VIP點數獲得率 (${vipPointsPerBean}點/樂豆點)`;
-    document.getElementById('vipToMapleRate-label').textContent = `VIP兌換楓點 (${vipToMapleRate}:1)`;
+    const vipLevelText = vipPointsPerBean === '30' ? '黃金' : vipPointsPerBean === '40' ? '鑽石' : '皇家';
+    document.getElementById('vipPointsPerBean-label').textContent = `VIP等級 (${vipLevelText})`;
     document.getElementById('mapleToMesoRate-label').textContent = `楓點兌換楓幣 (1:${mapleToMesoRate}億楓幣)`;
     document.getElementById('marketRate-label').textContent = `市場匯率 (1台幣=${marketRate}千萬楓幣)`;
 
     // 更新模式描述
     const modeOptions = document.querySelectorAll('.mode-option .mode-desc');
-    modeOptions[0].textContent = `1台幣 = ${(1 + cashbackRate/100).toFixed(2)}樂豆點 (${cashbackRate}%回饋)`;
+    modeOptions[0].textContent = `1台幣 = 1.05樂豆點 (固定5%回饋)`;
     modeOptions[1].textContent = `${(discountRate/100).toFixed(2)}台幣 = 1樂豆點 (${discountRate}折)`;
+    modeOptions[2].textContent = `1台幣 = 1樂豆點 (無折扣)`;
 }
 
 function resetParameters() {
     // 重置為預設值
-    document.getElementById('cashbackRate').value = 5;
     document.getElementById('discountRate').value = 95;
     document.getElementById('vipPointsPerBean').value = 40;
-    document.getElementById('vipToMapleRate').value = 300;
     document.getElementById('mapleToMesoRate').value = 7;
     document.getElementById('marketRate').value = 1.7;
-    document.querySelector('input[name="purchaseMode"][value="cashback"]').checked = true;
+    document.querySelector(`input[name="purchaseMode"][value="${PURCHASE_MODES.CASHBACK}"]`).checked = true;
 
     // 更新顯示
     updateParameterDisplay();
