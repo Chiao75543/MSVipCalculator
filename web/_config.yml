@@ -1,0 +1,19 @@
+# GitHub Pages 配置
+title: "楓之谷回饋計算機"
+baseurl: ""
+url: ""
+
+# 排除不需要部署的文件
+exclude:
+  - "*.go"
+  - "go.mod"
+  - "go.sum"
+  - "demo_main.go"
+  - ".gitignore"
+  - "README.md"
+
+# 包含的文件
+include:
+  - "index.html"
+  - "styles.css"
+  - "calculator.js"

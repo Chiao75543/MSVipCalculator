@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="楓之谷樂豆點回饋幣值計算機 - 分析投資樂豆點的獲利潛力">
+    <meta name="keywords" content="楓之谷,樂豆點,VIP點數,獲利計算,MapleStory">
+    <title>🍁 楓之谷樂豆點回饋幣值計算機</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <h1>楓之谷樂豆點回饋幣值計算機</h1>
+        <p class="subtitle">算一下花的錢allin楓點再賣楓幣會賺多少</p>
+    </header>
+
+    <main class="container">
+        <div class="main-content">
+            <!-- 快速開始提示 -->
+            <div class="quick-start-hint">
+                <p>💡 <strong>快速開始：</strong>選擇儲值方式，調整參數，輸入金額後點擊計算</p>
+            </div>
+            <!-- 購買模式選擇 -->
+            <section class="purchase-mode-section">
+                <h2>💳 儲值方式</h2>
+                <fieldset class="mode-selector">
+                    <legend class="sr-only">選擇購買模式</legend>
+                    <div class="mode-options">
+                        <label class="mode-option">
+                            <input type="radio" name="purchaseMode" value="cashback" checked>
+                            <span class="mode-label">
+                                <span class="mode-title">刷卡回饋(讀卡為5%)</span>
+                                <span class="mode-desc">1台幣 = 1.05樂豆點 (5%回饋)</span>
+                            </span>
+                        </label>
+                        <label class="mode-option">
+                            <input type="radio" name="purchaseMode" value="discount">
+                            <span class="mode-label">
+                                <span class="mode-title">買點卡</span>
+                                <span class="mode-desc">0.95台幣 = 1樂豆點 (95折)</span>
+                            </span>
+                        </label>
+                    </div>
+                </fieldset>
+            </section>
+
+            <!-- 參數設定 -->
+            <section class="parameters-section">
+                <h2>⚙️ 參數設定</h2>
+                <form class="parameters-form">
+                    <div class="parameters-grid">
+                        <div class="parameter-group">
+                            <label for="cashbackRate" id="cashbackRate-label">刷卡回饋率 (%)</label>
+                            <input type="number" id="cashbackRate" value="5" min="0" max="50" step="0.1" 
+                                   aria-describedby="cashbackRate-help">
+                            <small id="cashbackRate-help" class="help-text">讀卡機5% or 你的信用卡</small>
+                        </div>
+                        <div class="parameter-group">
+                            <label for="discountRate" id="discountRate-label">點卡折數 (折)</label>
+                            <input type="number" id="discountRate" value="95" min="50" max="100" step="1"
+                                   aria-describedby="discountRate-help">
+                            <small id="discountRate-help" class="help-text">點卡折扣</small>
+                        </div>
+                        <div class="parameter-group">
+                            <label for="vipPointsPerBean" id="vipPointsPerBean-label">VIP點數獲得率 (點/1樂豆點)</label>
+                            <input type="number" id="vipPointsPerBean" value="40" min="0" max="100" step="1"
+                                   aria-describedby="vipPointsPerBean-help">
+                            <small id="vipPointsPerBean-help" class="help-text">每樂豆點獲得VIP點數</small>
+                        </div>
+                        <div class="parameter-group">
+                            <label for="vipToMapleRate" id="vipToMapleRate-label">VIP兌換楓點 (VIP點數:楓點)</label>
+                            <input type="number" id="vipToMapleRate" value="300" min="1" max="1000" step="1"
+                                   aria-describedby="vipToMapleRate-help">
+                            <small id="vipToMapleRate-help" class="help-text">VIP點數兌換楓點比率</small>
+                        </div>
+                        <div class="parameter-group">
+                            <label for="mapleToMesoRate" id="mapleToMesoRate-label">楓點兌換楓幣 (楓點:億楓幣)</label>
+                            <input type="number" id="mapleToMesoRate" value="7" min="1" max="50" step="0.1"
+                                   aria-describedby="mapleToMesoRate-help">
+                            <small id="mapleToMesoRate-help" class="help-text">楓點兌換億楓幣比率</small>
+                        </div>
+                        <div class="parameter-group">
+                            <label for="marketRate" id="marketRate-label">市場匯率 (1台幣=X千萬楓幣)</label>
+                            <input type="number" id="marketRate" value="1.7" min="0.1" max="5" step="0.1"
+                                   aria-describedby="marketRate-help">
+                            <small id="marketRate-help" class="help-text">楓幣市場價格</small>
+                        </div>
+                    </div>
+                    <div class="parameters-actions">
+                        <button type="button" id="resetParams" class="btn btn-secondary">重置為預設值</button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- 單次計算 -->
+            <section class="calculator-section">
+                <h2>💰 單次計算</h2>
+                <form class="calculator-form">
+                    <div class="calculator-input">
+                        <label for="investmentAmount">投入金額 (台幣)</label>
+                        <div class="input-group">
+                            <input type="number" id="investmentAmount" value="1000" min="50" max="1000000" step="1"
+                                   aria-describedby="investmentAmount-help" required>
+                            <button type="submit" id="calculateBtn" class="btn btn-primary">計算獲利率</button>
+                        </div>
+                        <small id="investmentAmount-help" class="help-text">最低投入金額為50台幣</small>
+                    </div>
+                </form>
+
+                <div id="calculationResult" class="result-section" style="display: none;" role="region" aria-live="polite">
+                    <h3>🎯 計算結果</h3>
+                    <div id="calculationSteps" class="calculation-steps"></div>
+                    <div id="profitSummary" class="profit-summary"></div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p class="version">Vibe coding with claude code</p>
+    </footer>
+
+    <script src="calculator.js"></script>
+</body>
+</html>
