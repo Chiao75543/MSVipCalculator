@@ -63,16 +63,19 @@
                             <small id="discountRate-help" class="help-text">點卡折扣</small>
                         </div>
                         <div class="parameter-group">
-                            <label for="vipPointsPerBean" id="vipPointsPerBean-label">VIP點數獲得率 (點/1樂豆點)</label>
-                            <input type="number" id="vipPointsPerBean" value="40" min="0" max="100" step="1"
-                                   aria-describedby="vipPointsPerBean-help">
-                            <small id="vipPointsPerBean-help" class="help-text">每樂豆點獲得VIP點數</small>
+                            <label for="vipPointsPerBean" id="vipPointsPerBean-label">VIP等級</label>
+                            <select id="vipPointsPerBean" aria-describedby="vipPointsPerBean-help">
+                                <option value="30">黃金 (30點/樂豆點)</option>
+                                <option value="40" selected>鑽石 (40點/樂豆點)</option>
+                                <option value="50">皇家 (50點/樂豆點)</option>
+                            </select>
+                            <small id="vipPointsPerBean-help" class="help-text">選擇你的VIP等級</small>
                         </div>
-                        <div class="parameter-group">
-                            <label for="vipToMapleRate" id="vipToMapleRate-label">VIP兌換楓點 (VIP點數:楓點)</label>
+                        <div class="parameter-group" style="display: none;">
+                            <label for="vipToMapleRate" id="vipToMapleRate-label">VIP兌換楓點 (300:1)</label>
                             <input type="number" id="vipToMapleRate" value="300" min="1" max="1000" step="1"
-                                   aria-describedby="vipToMapleRate-help">
-                            <small id="vipToMapleRate-help" class="help-text">VIP點數兌換楓點比率</small>
+                                   aria-describedby="vipToMapleRate-help" readonly>
+                            <small id="vipToMapleRate-help" class="help-text">VIP點數兌換楓點比率固定300:1</small>
                         </div>
                         <div class="parameter-group">
                             <label for="mapleToMesoRate" id="mapleToMesoRate-label">楓點兌換楓幣 (楓點:億楓幣)</label>

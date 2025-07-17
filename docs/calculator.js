@@ -119,7 +119,8 @@ class MapleStoryCalculator {
         }
         this.discountRate = parseFloat(document.getElementById('discountRate').value) / 100;
         this.vipPointsPerBean = parseFloat(document.getElementById('vipPointsPerBean').value);
-        this.vipToMapleRate = parseFloat(document.getElementById('vipToMapleRate').value);
+        // VIP兌換楓點固定300:1
+        this.vipToMapleRate = 300;
         this.mapleToMesoRate = parseFloat(document.getElementById('mapleToMesoRate').value);
         this.marketRate = parseFloat(document.getElementById('marketRate').value) * 10000000;
     }
@@ -153,8 +154,8 @@ function initializeEventListeners() {
         resetParameters();
     });
 
-    // 參數變更監聽
-    const parameterInputs = ['cashbackRate', 'discountRate', 'vipPointsPerBean', 'vipToMapleRate', 'mapleToMesoRate', 'marketRate'];
+    // 參數變更監聽 (移除 vipToMapleRate，因為已固定為300)
+    const parameterInputs = ['cashbackRate', 'discountRate', 'vipPointsPerBean', 'mapleToMesoRate', 'marketRate'];
     parameterInputs.forEach(id => {
         document.getElementById(id).addEventListener('input', updateParameterDisplay);
     });
@@ -206,8 +207,8 @@ function updateParameterDisplay() {
 
     // 更新標籤顯示當前值
     document.getElementById('discountRate-label').textContent = `點卡折數 (${discountRate}%)`;
-    document.getElementById('vipPointsPerBean-label').textContent = `VIP點數獲得率 (${vipPointsPerBean}點/樂豆點)`;
-    document.getElementById('vipToMapleRate-label').textContent = `VIP兌換楓點 (${vipToMapleRate}:1)`;
+    const vipLevelText = vipPointsPerBean == 30 ? '黃金' : vipPointsPerBean == 40 ? '鑽石' : '皇家';
+    document.getElementById('vipPointsPerBean-label').textContent = `VIP等級 (${vipLevelText})`;
     document.getElementById('mapleToMesoRate-label').textContent = `楓點兌換楓幣 (1:${mapleToMesoRate}億楓幣)`;
     document.getElementById('marketRate-label').textContent = `市場匯率 (1台幣=${marketRate}千萬楓幣)`;
 
