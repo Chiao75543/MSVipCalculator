@@ -111,7 +111,12 @@ class MapleStoryCalculator {
     }
     updateParameters() {
         this.purchaseMode = document.querySelector('input[name="purchaseMode"]:checked').value;
-        this.cashbackRate = parseFloat(document.getElementById('cashbackRate').value) / 100;
+        // 讀卡機模式固定5%回饋
+        if (this.purchaseMode === 'cashback') {
+            this.cashbackRate = 0.05;
+        } else {
+            this.cashbackRate = parseFloat(document.getElementById('cashbackRate').value) / 100;
+        }
         this.discountRate = parseFloat(document.getElementById('discountRate').value) / 100;
         this.vipPointsPerBean = parseFloat(document.getElementById('vipPointsPerBean').value);
         this.vipToMapleRate = parseFloat(document.getElementById('vipToMapleRate').value);
@@ -185,8 +190,21 @@ function updateParameterDisplay() {
     const marketRate = document.getElementById('marketRate').value;
     const purchaseMode = document.querySelector('input[name="purchaseMode"]:checked').value;
 
+    // 根據選擇的模式顯示/隱藏對應的參數
+    const cashbackGroup = document.getElementById('cashbackRate-group');
+    const discountGroup = document.getElementById('discountRate-group');
+    
+    if (purchaseMode === 'cashback') {
+        cashbackGroup.style.display = 'none'; // 讀卡機模式隱藏回饋率設定
+        discountGroup.style.display = 'none'; // 讀卡機模式隱藏點卡折數
+        // 強制設定為5%
+        document.getElementById('cashbackRate').value = 5;
+    } else {
+        cashbackGroup.style.display = 'none'; // 點卡模式也隱藏回饋率
+        discountGroup.style.display = 'flex'; // 點卡模式顯示折數設定
+    }
+
     // 更新標籤顯示當前值
-    document.getElementById('cashbackRate-label').textContent = `刷卡回饋率 (${cashbackRate}%)`;
     document.getElementById('discountRate-label').textContent = `點卡折數 (${discountRate}%)`;
     document.getElementById('vipPointsPerBean-label').textContent = `VIP點數獲得率 (${vipPointsPerBean}點/樂豆點)`;
     document.getElementById('vipToMapleRate-label').textContent = `VIP兌換楓點 (${vipToMapleRate}:1)`;
@@ -195,7 +213,7 @@ function updateParameterDisplay() {
 
     // 更新模式描述
     const modeOptions = document.querySelectorAll('.mode-option .mode-desc');
-    modeOptions[0].textContent = `1台幣 = ${(1 + cashbackRate/100).toFixed(2)}樂豆點 (${cashbackRate}%回饋)`;
+    modeOptions[0].textContent = `1台幣 = 1.05樂豆點 (固定5%回饋)`;
     modeOptions[1].textContent = `${(discountRate/100).toFixed(2)}台幣 = 1樂豆點 (${discountRate}折)`;
 }
 
