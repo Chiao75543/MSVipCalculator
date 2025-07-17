@@ -70,27 +70,27 @@ class MapleStoryCalculator {
 
         // 樂豆點轉楓點 (1:1)
         result.initialMaple = result.beanPoints;
-        result.steps.push(`🔄 樂豆點轉楓點 (1:1): ${result.beanPoints.toFixed(2)}樂豆點 → ${result.initialMaple.toFixed(2)}楓點`);
+        result.steps.push(`樂豆點轉楓點 (1:1): ${result.beanPoints.toFixed(2)}樂豆點 → ${result.initialMaple.toFixed(2)}楓點`);
 
         // VIP點數獲得
         result.vipPoints = result.beanPoints * this.vipPointsPerBean;
-        result.steps.push(`⭐ VIP點數獲得: ${result.beanPoints.toFixed(2)}樂豆點 × ${this.vipPointsPerBean.toFixed(0)} = ${result.vipPoints.toFixed(0)} VIP點數`);
+        result.steps.push(`VIP點數獲得: ${result.beanPoints.toFixed(2)}樂豆點 × ${this.vipPointsPerBean.toFixed(0)} = ${result.vipPoints.toFixed(0)} VIP點數`);
 
         // VIP兌換楓點
         result.bonusMaple = result.vipPoints / this.vipToMapleRate;
-        result.steps.push(`🎁 VIP兌換楓點: ${result.vipPoints.toFixed(0)} VIP點數 ÷ ${this.vipToMapleRate.toFixed(0)} = ${result.bonusMaple.toFixed(2)}楓點`);
+        result.steps.push(`VIP兌換楓點: ${result.vipPoints.toFixed(0)} VIP點數 ÷ ${this.vipToMapleRate.toFixed(0)} = ${result.bonusMaple.toFixed(2)}楓點`);
 
         // 總楓點
         result.totalMaple = result.initialMaple + result.bonusMaple;
-        result.steps.push(`📊 總楓點: ${result.initialMaple.toFixed(2)} + ${result.bonusMaple.toFixed(2)} = ${result.totalMaple.toFixed(2)}楓點`);
+        result.steps.push(`總楓點: ${result.initialMaple.toFixed(2)} + ${result.bonusMaple.toFixed(2)} = ${result.totalMaple.toFixed(2)}楓點`);
 
         // 楓幣計算
         result.totalMeso = (result.totalMaple / this.mapleToMesoRate) * this.MESO_PER_YI;
-        result.steps.push(`💰 楓幣計算: ${result.totalMaple.toFixed(2)}楓點 ÷ ${this.mapleToMesoRate.toFixed(0)} × ${this.MESO_PER_YI.toFixed(0)} = ${result.totalMeso.toFixed(0)}楓幣`);
+        result.steps.push(`楓幣計算: ${result.totalMaple.toFixed(2)}楓點 ÷ ${this.mapleToMesoRate.toFixed(0)} × ${this.MESO_PER_YI.toFixed(0)} = ${result.totalMeso.toFixed(0)}楓幣`);
 
         // 市場價值計算
         result.marketValue = result.totalMeso / this.marketRate;
-        result.steps.push(`🏪 市場價值: ${result.totalMeso.toFixed(0)}楓幣 ÷ ${this.marketRate.toFixed(0)} = ${result.marketValue.toFixed(2)}台幣`);
+        result.steps.push(`市場價值: ${result.totalMeso.toFixed(0)}楓幣 ÷ ${this.marketRate.toFixed(0)} = ${result.marketValue.toFixed(2)}台幣`);
 
         // 獲利率計算
         if (Math.abs(amountTWD) < this.EPSILON) {
